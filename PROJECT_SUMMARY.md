@@ -32,6 +32,19 @@ Open dataset details to resolve after metadata inspection:
 - Sampling rate for selected LFP recordings.
 - Anatomical channel ordering and adjacency definition from HC-3 channel order metadata.
 
+Initial real-data subset:
+
+- Top directory: `ec013.33`
+- Session: `ec013.544`
+- Behavior: `Mwheel`
+- Metadata duration: 29.1 seconds
+- LFP file: `ec013.544.eeg`
+- XML metadata file: `ec013.544.xml`
+- LFP sample rate: 1250 Hz
+- Channel count: 65
+- First adjacent pair: channels 38 and 39 from anatomical group/shank 5
+- Differential trace: `channel_39 - channel_38`
+
 ## Signal Processing Pipeline
 
 ### Differential LFP

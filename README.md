@@ -14,6 +14,8 @@ notebooks/00_hc3_download_and_phase_targets.ipynb
 
 That notebook downloads public HC-3 documentation/metadata and prepares a selected session download path. Full HC-3 LFP archives are large, so raw session data is intentionally excluded from git.
 
+The first real-data example uses `ec013.33/ec013.544`, a small HC-3 Mwheel session. It downloads `ec013.544.xml` and `ec013.544.eeg` from the Buzsaki Lab mirror, loads adjacent channels 38 and 39 from shank/group 5, and builds a differential LFP trace as `channel_39 - channel_38`.
+
 ## Dataset
 
 - CRCNS HC-3: https://crcns.org/data-sets/hc/hc-3/about-hc-3
@@ -43,4 +45,3 @@ On AMD Windows, install the AMD PyTorch build before running training. Do not le
 - Training target: nominal phase corresponding to the next acausal 180 degree target phase.
 
 See [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) for the full design.
-

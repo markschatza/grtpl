@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urljoin
+import xml.etree.ElementTree as ET
 
+import numpy as np
 import requests
 from tqdm.auto import tqdm
 
@@ -61,3 +63,56 @@ def download_public_hc3_docs(raw_dir: Path) -> list[DownloadedFile]:
 
 def hc3_session_url(session_archive_name: str) -> str:
     return urljoin(HC3_NERSC_BASE, session_archive_name)
+
+
+def buzsaki_hc3_session_base_url(topdir: str, session: str) -> str:
+    return f"https://buzsakilab.nyumc.org/datasets/MizusekiK/hc-3/{topdir}/{session}/"
+
+
+def download_buzsaki_hc3_session_files(
+    topdir: str,
+    session: str,
+    raw_dir: Path,
+    extensions: tuple[str, ...] = ("xml", "eeg"),
+) -> list[DownloadedFile]:
+    session_dir = raw_dir / "hc3" / topdir / session
+    base_url = buzsaki_hc3_session_base_url(topdir, session)
+    downloaded: list[DownloadedFile] = []
+    for extension in extensions:
+        filename = f"{session}.{extension}"
+        destination = session_dir / filename
+        url = urljoin(base_url, filename)
+        if destination.exists() and destination.stat().st_size > 0:
+            downloaded.append(DownloadedFile(filename, url, destination, destination.stat().st_size))
+            continue
+        downloaded.append(download_file(url, destination))
+    return downloaded
+
+
+def read_hc3_xml_metadata(xml_path: Path) -> dict[str, object]:
+    root = ET.parse(xml_path).getroot()
+    acquisition = root.find("acquisitionSystem")
+    field_potentials = root.find("fieldPotentials")
+    if acquisition is None or field_potentials is None:
+        raise ValueError(f"Missing acquisition metadata in {xml_path}")
+
+    channel_groups: list[list[int]] = []
+    groups_root = root.find("anatomicalDescription/channelGroups")
+    if groups_root is not None:
+        for group in groups_root.findall("group"):
+            channel_groups.append([int(channel.text) for channel in group.findall("channel")])
+
+    return {
+        "n_channels": int(acquisition.findtext("nChannels")),
+        "sampling_rate_hz": float(acquisition.findtext("samplingRate")),
+        "lfp_sampling_rate_hz": float(field_potentials.findtext("lfpSamplingRate")),
+        "channel_groups": channel_groups,
+    }
+
+
+def load_eeg_channels(eeg_path: Path, n_channels: int, channels: list[int]) -> np.ndarray:
+    raw = np.memmap(eeg_path, dtype="<i2", mode="r")
+    if raw.size % n_channels != 0:
+        raise ValueError(f"{eeg_path} sample count is not divisible by {n_channels} channels")
+    samples = raw.reshape((-1, n_channels))
+    return np.asarray(samples[:, channels], dtype=np.float32)
