@@ -244,6 +244,7 @@ grtpl/
     processed/
   notebooks/
     00_hc3_download_and_phase_targets.ipynb
+    01_transformer_phase_model.ipynb
   src/
     grtpl/
       data/
@@ -267,6 +268,20 @@ grtpl/
 7. Build a dataset object that emits phase-context windows and nominal phase targets.
 8. Train a small baseline transformer.
 9. Compare against simple oscillator baselines before scaling model size.
+
+## Initial Transformer Baseline
+
+The first transformer notebook uses only causal phase tokens as input:
+
+- Input token vocabulary: 360 phase bins, representing 0-359 degrees.
+- Window shape: fixed historical context of decimated causal phase tokens.
+- Initial context length: 128 samples at 25 Hz, or about 5.1 seconds of history.
+- Model: learned token embedding, learned positional embedding, causal Transformer encoder, final-state prediction head.
+- Output: 2D unit vector `(cos(target_phase), sin(target_phase))`.
+- Training loss: `mean(1 - cos(predicted_phase - target_phase))`.
+- Evaluation metric: absolute circular phase error in degrees.
+
+The notebook keeps PyTorch installation separate from the project dependencies so the AMD Windows PyTorch build is not replaced by a generic CPU wheel.
 
 ## Key Open Questions
 
