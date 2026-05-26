@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.ruff_cache/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local data and generated outputs
+data/raw/
+data/interim/
+data/processed/
+outputs/
+models/
+
+# Keep directory placeholders
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+
+# Local secrets
+.env
+*.env
+crcns_credentials.*
+
