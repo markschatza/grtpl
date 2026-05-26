@@ -18,9 +18,9 @@ That notebook downloads public HC-3 documentation/metadata and prepares a select
 
 The first real-data example uses `ec013.33/ec013.544`, a small HC-3 Mwheel session. It downloads `ec013.544.xml` and `ec013.544.eeg` from the Buzsaki Lab mirror, loads adjacent channels 38 and 39 from shank/group 5, and builds a differential LFP trace as `channel_39 - channel_38`.
 
-The transformer notebook builds windowed causal phase-token examples from that same real session and defines the first PyTorch model/training loop. It is not automatically executed because the local AMD Windows PyTorch stack should be installed and selected intentionally.
+The transformer notebooks now use a larger default dataset from the same `ec013.33` Mwheel block: `ec013.541`, `ec013.543`, and `ec013.544`. That gives about 7,147 decimated phase-target rows at 25 Hz before windowing, while keeping the same channel pair and avoiding cross-session windows.
 
-The Colab copy clones this public repo into `/content/grtpl`, installs the lightweight project dependencies, uses Colab's built-in PyTorch GPU runtime, and runs a short 50-step smoke training loop by default.
+The Colab copy clones this public repo into `/content/grtpl`, installs the lightweight project dependencies, uses Colab's built-in PyTorch GPU runtime, and runs a short smoke training loop by default.
 
 ## Dataset
 

@@ -45,6 +45,18 @@ Initial real-data subset:
 - First adjacent pair: channels 38 and 39 from anatomical group/shank 5
 - Differential trace: `channel_39 - channel_38`
 
+Expanded transformer subset:
+
+- Top directory: `ec013.33`
+- Sessions: `ec013.541`, `ec013.543`, `ec013.544`
+- Behavior: `Mwheel`
+- Rationale: same animal/topdir and same `ec013.540_561` channel-order range, so channels 38 and 39 remain a consistent local pair.
+- Current 25 Hz target-table size after filtering invalid horizons:
+  - `ec013.541`: 3,431 rows
+  - `ec013.543`: 2,988 rows
+  - `ec013.544`: 728 rows
+  - Total: 7,147 rows
+
 ## Signal Processing Pipeline
 
 ### Differential LFP
@@ -284,7 +296,9 @@ The first transformer notebook uses only causal phase tokens as input:
 
 The notebook keeps PyTorch installation separate from the project dependencies so the AMD Windows PyTorch build is not replaced by a generic CPU wheel.
 
-The Colab transformer notebook is a copy adapted for quick cloud smoke tests. It clones the public repo into `/content/grtpl`, installs the project without installing PyTorch, uses Colab's existing CUDA PyTorch runtime, and defaults to a smaller 64-token context with 50 training steps.
+The transformer dataset is built per session and concatenated after target generation. The windowed dataset prevents historical contexts from crossing recording/session boundaries.
+
+The Colab transformer notebook is a copy adapted for quick cloud smoke tests. It clones the public repo into `/content/grtpl`, installs the project without installing PyTorch, uses Colab's existing CUDA PyTorch runtime, and defaults to a smaller 64-token context with 200 training steps.
 
 ## Key Open Questions
 
