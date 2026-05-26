@@ -11,6 +11,7 @@ The project is notebook-first. Begin with:
 ```text
 notebooks/00_hc3_download_and_phase_targets.ipynb
 notebooks/01_transformer_phase_model.ipynb
+notebooks/01_transformer_phase_model_colab.ipynb
 ```
 
 That notebook downloads public HC-3 documentation/metadata and prepares a selected session download path. Full HC-3 LFP archives are large, so raw session data is intentionally excluded from git.
@@ -18,6 +19,8 @@ That notebook downloads public HC-3 documentation/metadata and prepares a select
 The first real-data example uses `ec013.33/ec013.544`, a small HC-3 Mwheel session. It downloads `ec013.544.xml` and `ec013.544.eeg` from the Buzsaki Lab mirror, loads adjacent channels 38 and 39 from shank/group 5, and builds a differential LFP trace as `channel_39 - channel_38`.
 
 The transformer notebook builds windowed causal phase-token examples from that same real session and defines the first PyTorch model/training loop. It is not automatically executed because the local AMD Windows PyTorch stack should be installed and selected intentionally.
+
+The Colab copy clones this public repo into `/content/grtpl`, installs the lightweight project dependencies, uses Colab's built-in PyTorch GPU runtime, and runs a short 50-step smoke training loop by default.
 
 ## Dataset
 

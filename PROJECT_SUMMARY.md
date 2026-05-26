@@ -245,6 +245,7 @@ grtpl/
   notebooks/
     00_hc3_download_and_phase_targets.ipynb
     01_transformer_phase_model.ipynb
+    01_transformer_phase_model_colab.ipynb
   src/
     grtpl/
       data/
@@ -282,6 +283,8 @@ The first transformer notebook uses only causal phase tokens as input:
 - Evaluation metric: absolute circular phase error in degrees.
 
 The notebook keeps PyTorch installation separate from the project dependencies so the AMD Windows PyTorch build is not replaced by a generic CPU wheel.
+
+The Colab transformer notebook is a copy adapted for quick cloud smoke tests. It clones the public repo into `/content/grtpl`, installs the project without installing PyTorch, uses Colab's existing CUDA PyTorch runtime, and defaults to a smaller 64-token context with 50 training steps.
 
 ## Key Open Questions
 
